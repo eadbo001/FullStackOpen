@@ -1,29 +1,16 @@
 ```mermaid
 sequenceDiagram
-    participant browser
-    participant server
     Note right of browser: Pressing save button sends user input to server
     browser->>+server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     
-    server-->>-browser: HTML document
+    server-->>-browser: URL redirect asking the browser for a new GET request
+    note left of server: Server creates an object into notes array based in user input in POST
+
+    browser->>+server: The browser reloads the .../notes page sending 3 requests (GET) for css, js and json data.
     
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
-    activate server
-    server-->>browser: the css file
-    deactivate server
+    server-->>-browser: the css and js files and the json data
+    note right of browser: browser reloads with the updated list/array and shows user input
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
-    activate server
-    server-->>browser: the JavaScript file
-    deactivate server
-
-    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
-    deactivate server
-
-    Note right of browser: The browser executes the callback function that renders the notes
+    
 ``` 
